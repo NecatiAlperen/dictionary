@@ -18,6 +18,7 @@
 		3B07CABC2C14F8EF00652E40 /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B07CABB2C14F8EF00652E40 /* HomeInteractor.swift */; };
 		3B07CABE2C14F90600652E40 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B07CABD2C14F90600652E40 /* HomePresenter.swift */; };
 		3B07CAC02C14F91000652E40 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B07CABF2C14F91000652E40 /* HomeRouter.swift */; };
+		3B945C9D2C16186B0019F208 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B945C9C2C16186B0019F208 /* WebService.swift */; };
 		3BB8DC1C2C13DC68007700B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC1B2C13DC68007700B6 /* AppDelegate.swift */; };
 		3BB8DC1E2C13DC68007700B6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC1D2C13DC68007700B6 /* SceneDelegate.swift */; };
 		3BB8DC252C13DC6A007700B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB8DC242C13DC6A007700B6 /* Assets.xcassets */; };
@@ -25,6 +26,13 @@
 		3BB8DC3D2C13DC6A007700B6 /* DictionaryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC3C2C13DC6A007700B6 /* DictionaryUITests.swift */; };
 		3BB8DC3F2C13DC6A007700B6 /* DictionaryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC3E2C13DC6A007700B6 /* DictionaryUITestsLaunchTests.swift */; };
 		3BE3EFCF2C14AF590077B42B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE3EFCE2C14AF590077B42B /* BaseViewController.swift */; };
+		3BE5B71F2C16191400A85DE4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE5B71E2C16191400A85DE4 /* Alamofire */; };
+		3BE5B7222C16196F00A85DE4 /* WordDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7212C16196F00A85DE4 /* WordDetail.swift */; };
+		3BE5B7242C16199400A85DE4 /* WordSynonym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7232C16199400A85DE4 /* WordSynonym.swift */; };
+		3BE5B7262C1624D900A85DE4 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7252C1624D900A85DE4 /* DetailViewController.swift */; };
+		3BE5B7282C16257400A85DE4 /* DetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7272C16257400A85DE4 /* DetailInteractor.swift */; };
+		3BE5B72A2C1625BE00A85DE4 /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7292C1625BE00A85DE4 /* DetailPresenter.swift */; };
+		3BE5B72C2C16260000A85DE4 /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B72B2C16260000A85DE4 /* DetailRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +64,7 @@
 		3B07CABB2C14F8EF00652E40 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
 		3B07CABD2C14F90600652E40 /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		3B07CABF2C14F91000652E40 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		3B945C9C2C16186B0019F208 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		3BB8DC182C13DC68007700B6 /* Dictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BB8DC1B2C13DC68007700B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3BB8DC1D2C13DC68007700B6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +76,12 @@
 		3BB8DC3C2C13DC6A007700B6 /* DictionaryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryUITests.swift; sourceTree = "<group>"; };
 		3BB8DC3E2C13DC6A007700B6 /* DictionaryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		3BE3EFCE2C14AF590077B42B /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		3BE5B7212C16196F00A85DE4 /* WordDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordDetail.swift; sourceTree = "<group>"; };
+		3BE5B7232C16199400A85DE4 /* WordSynonym.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSynonym.swift; sourceTree = "<group>"; };
+		3BE5B7252C1624D900A85DE4 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		3BE5B7272C16257400A85DE4 /* DetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInteractor.swift; sourceTree = "<group>"; };
+		3BE5B7292C1625BE00A85DE4 /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		3BE5B72B2C16260000A85DE4 /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BE5B71F2C16191400A85DE4 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				3B07CAB72C14EFF600652E40 /* Reachability.swift */,
+				3B945C9C2C16186B0019F208 /* WebService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -189,6 +206,7 @@
 		3BE3EFC92C14AEF70077B42B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3BE5B7202C16195B00A85DE4 /* Entitiy */,
 				3BE3EFCD2C14AF100077B42B /* Detail */,
 				3BE3EFCC2C14AF0B0077B42B /* Home */,
 				3BE3EFCB2C14AF050077B42B /* Splash */,
@@ -230,8 +248,21 @@
 		3BE3EFCD2C14AF100077B42B /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				3BE5B7252C1624D900A85DE4 /* DetailViewController.swift */,
+				3BE5B7272C16257400A85DE4 /* DetailInteractor.swift */,
+				3BE5B7292C1625BE00A85DE4 /* DetailPresenter.swift */,
+				3BE5B72B2C16260000A85DE4 /* DetailRouter.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		3BE5B7202C16195B00A85DE4 /* Entitiy */ = {
+			isa = PBXGroup;
+			children = (
+				3BE5B7212C16196F00A85DE4 /* WordDetail.swift */,
+				3BE5B7232C16199400A85DE4 /* WordSynonym.swift */,
+			);
+			path = Entitiy;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +281,9 @@
 			dependencies = (
 			);
 			name = Dictionary;
+			packageProductDependencies = (
+				3BE5B71E2C16191400A85DE4 /* Alamofire */,
+			);
 			productName = Dictionary;
 			productReference = 3BB8DC182C13DC68007700B6 /* Dictionary.app */;
 			productType = "com.apple.product-type.application";
@@ -323,7 +357,7 @@
 			);
 			mainGroup = 3BB8DC0F2C13DC68007700B6;
 			packageReferences = (
-				3B07CAC32C151C6100652E40 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				3B945C9E2C16189E0019F208 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 3BB8DC192C13DC68007700B6 /* Products */;
 			projectDirPath = "";
@@ -369,16 +403,23 @@
 				3BB8DC1C2C13DC68007700B6 /* AppDelegate.swift in Sources */,
 				3B07CAB12C14EE2900652E40 /* SplashInteractor.swift in Sources */,
 				3B07CAA72C14EBEB00652E40 /* LoadingView.swift in Sources */,
+				3BE5B72A2C1625BE00A85DE4 /* DetailPresenter.swift in Sources */,
 				3B07CABC2C14F8EF00652E40 /* HomeInteractor.swift in Sources */,
 				3B07CAB32C14EE8A00652E40 /* SplashPresenter.swift in Sources */,
 				3BB8DC1E2C13DC68007700B6 /* SceneDelegate.swift in Sources */,
 				3B07CAAF2C14ED7400652E40 /* SplashViewController.swift in Sources */,
+				3BE5B7282C16257400A85DE4 /* DetailInteractor.swift in Sources */,
 				3B07CAAB2C14EC5A00652E40 /* LoadingShowable.swift in Sources */,
 				3B07CABA2C14F8E000652E40 /* HomeViewController.swift in Sources */,
+				3BE5B7262C1624D900A85DE4 /* DetailViewController.swift in Sources */,
+				3BE5B72C2C16260000A85DE4 /* DetailRouter.swift in Sources */,
 				3B07CAC02C14F91000652E40 /* HomeRouter.swift in Sources */,
+				3BE5B7222C16196F00A85DE4 /* WordDetail.swift in Sources */,
+				3B945C9D2C16186B0019F208 /* WebService.swift in Sources */,
 				3B07CABE2C14F90600652E40 /* HomePresenter.swift in Sources */,
 				3B07CAB52C14EF5800652E40 /* SplashRouter.swift in Sources */,
 				3B07CAB82C14EFF600652E40 /* Reachability.swift in Sources */,
+				3BE5B7242C16199400A85DE4 /* WordSynonym.swift in Sources */,
 				3BE3EFCF2C14AF590077B42B /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -707,7 +748,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3B07CAC32C151C6100652E40 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		3B945C9E2C16189E0019F208 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -716,6 +757,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3BE5B71E2C16191400A85DE4 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B945C9E2C16189E0019F208 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3BB8DC102C13DC68007700B6 /* Project object */;
 }

@@ -5,25 +5,24 @@
 //  Created by Necati Alperen IŞIK on 8.06.2024.
 //
 
-import Foundation
+import UIKit
 
 enum HomeRoutes {
-    case detail
+    case detail(details: [WordDetail])
 }
 
 protocol HomeRouterProtocol {
-    func navigate(_ route: HomeRoutes)
+    func navigate(to route: HomeRoutes)
 }
 
 final class HomeRouter {
-    
     weak var viewController: HomeViewController?
     
     static func createModule() -> HomeViewController {
         let view = HomeViewController()
         let interactor = HomeInteractor()
         let router = HomeRouter()
-        let presenter = HomePresenter(view: view, router: router , interactor: interactor)
+        let presenter = HomePresenter(view: view, router: router, interactor: interactor)
         view.presenter = presenter
         interactor.output = presenter
         router.viewController = view
@@ -32,9 +31,12 @@ final class HomeRouter {
 }
 
 extension HomeRouter: HomeRouterProtocol {
-    
-    func navigate(_ route: HomeRoutes) {
-        
+    func navigate(to route: HomeRoutes) {
+        switch route {
+        case .detail(let details):
+            let detailVC = DetailRouter.createModule(with: details)
+            viewController?.navigationController?.pushViewController(detailVC, animated: true)
+        }
     }
-    
 }
+

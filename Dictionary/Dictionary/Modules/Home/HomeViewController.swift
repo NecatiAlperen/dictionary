@@ -5,9 +5,11 @@
 //  Created by Necati Alperen IŞIK on 8.06.2024.
 //
 
+
+
 import UIKit
 
-protocol HomeViewControllerProtocol : AnyObject {
+protocol HomeViewControllerProtocol: AnyObject {
     func showLoadingView()
     func hideLoadingView()
     func showError(_ message: String)
@@ -30,6 +32,7 @@ final class HomeViewController: BaseViewController {
         button.backgroundColor = .blue
         button.layer.cornerRadius = 15
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
         return button
     }()
     
@@ -87,10 +90,14 @@ final class HomeViewController: BaseViewController {
             self.view.layoutIfNeeded()
         }
     }
+
+    @objc func didTapSearchButton() {
+        guard let query = searchBar.text, !query.isEmpty else { return }
+        presenter.search(query: query)
+    }
 }
 
 extension HomeViewController: HomeViewControllerProtocol {
-    
     func showError(_ message: String) {
         showAlert(with: "Error", message: message)
     }
@@ -103,6 +110,7 @@ extension HomeViewController: HomeViewControllerProtocol {
         hideLoading()
     }
 }
+
 
 extension HomeViewController: UISearchBarDelegate {
     
