@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 protocol HomePresenterProtocol {
     func viewDidLoad()
     func search(query: String)
@@ -52,3 +50,4 @@ extension HomePresenter: HomeInteractorOutputProtocol {
         view.showError(error.localizedDescription)
     }
 }
+

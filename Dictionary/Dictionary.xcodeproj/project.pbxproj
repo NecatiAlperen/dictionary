@@ -25,6 +25,10 @@
 		3BB8DC332C13DC6A007700B6 /* DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC322C13DC6A007700B6 /* DictionaryTests.swift */; };
 		3BB8DC3D2C13DC6A007700B6 /* DictionaryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC3C2C13DC6A007700B6 /* DictionaryUITests.swift */; };
 		3BB8DC3F2C13DC6A007700B6 /* DictionaryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC3E2C13DC6A007700B6 /* DictionaryUITestsLaunchTests.swift */; };
+		3BE3AC032C1714E800191A43 /* SynonymCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE3AC022C1714E700191A43 /* SynonymCell.swift */; };
+		3BE3AC052C171A8100191A43 /* SynonymTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE3AC042C171A8100191A43 /* SynonymTableViewCell.swift */; };
+		3BE3AC0A2C1728E300191A43 /* CGFloat + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE3AC092C1728E300191A43 /* CGFloat + Extension.swift */; };
+		3BE3AC0D2C172C4000191A43 /* RecentSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE3AC0C2C172C4000191A43 /* RecentSearchCell.swift */; };
 		3BE3EFCF2C14AF590077B42B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE3EFCE2C14AF590077B42B /* BaseViewController.swift */; };
 		3BE5B71F2C16191400A85DE4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE5B71E2C16191400A85DE4 /* Alamofire */; };
 		3BE5B7222C16196F00A85DE4 /* WordDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7212C16196F00A85DE4 /* WordDetail.swift */; };
@@ -33,6 +37,7 @@
 		3BE5B7282C16257400A85DE4 /* DetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7272C16257400A85DE4 /* DetailInteractor.swift */; };
 		3BE5B72A2C1625BE00A85DE4 /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B7292C1625BE00A85DE4 /* DetailPresenter.swift */; };
 		3BE5B72C2C16260000A85DE4 /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B72B2C16260000A85DE4 /* DetailRouter.swift */; };
+		3BE5B72F2C1640E900A85DE4 /* WordDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE5B72E2C1640E900A85DE4 /* WordDetailCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +80,10 @@
 		3BB8DC382C13DC6A007700B6 /* DictionaryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DictionaryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BB8DC3C2C13DC6A007700B6 /* DictionaryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryUITests.swift; sourceTree = "<group>"; };
 		3BB8DC3E2C13DC6A007700B6 /* DictionaryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3BE3AC022C1714E700191A43 /* SynonymCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynonymCell.swift; sourceTree = "<group>"; };
+		3BE3AC042C171A8100191A43 /* SynonymTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynonymTableViewCell.swift; sourceTree = "<group>"; };
+		3BE3AC092C1728E300191A43 /* CGFloat + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat + Extension.swift"; sourceTree = "<group>"; };
+		3BE3AC0C2C172C4000191A43 /* RecentSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCell.swift; sourceTree = "<group>"; };
 		3BE3EFCE2C14AF590077B42B /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		3BE5B7212C16196F00A85DE4 /* WordDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordDetail.swift; sourceTree = "<group>"; };
 		3BE5B7232C16199400A85DE4 /* WordSynonym.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSynonym.swift; sourceTree = "<group>"; };
@@ -82,6 +91,7 @@
 		3BE5B7272C16257400A85DE4 /* DetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInteractor.swift; sourceTree = "<group>"; };
 		3BE5B7292C1625BE00A85DE4 /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
 		3BE5B72B2C16260000A85DE4 /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
+		3BE5B72E2C1640E900A85DE4 /* WordDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordDetailCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +193,22 @@
 			path = DictionaryUITests;
 			sourceTree = "<group>";
 		};
+		3BE3AC082C1728C500191A43 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3BE3AC092C1728E300191A43 /* CGFloat + Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3BE3AC0B2C172C2400191A43 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3BE3AC0C2C172C4000191A43 /* RecentSearchCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		3BE3EFC72C14AEAB0077B42B /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +221,7 @@
 		3BE3EFC82C14AEC30077B42B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3BE3AC082C1728C500191A43 /* Extensions */,
 				3B07CAA92C14EC3F00652E40 /* Utils */,
 				3B07CAA82C14EBEE00652E40 /* Views */,
 				3BB8DC292C13DC6A007700B6 /* Info.plist */,
@@ -237,6 +264,7 @@
 		3BE3EFCC2C14AF0B0077B42B /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				3BE3AC0B2C172C2400191A43 /* Cells */,
 				3B07CAB92C14F8E000652E40 /* HomeViewController.swift */,
 				3B07CABB2C14F8EF00652E40 /* HomeInteractor.swift */,
 				3B07CABD2C14F90600652E40 /* HomePresenter.swift */,
@@ -248,6 +276,7 @@
 		3BE3EFCD2C14AF100077B42B /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				3BE5B72D2C1640B200A85DE4 /* Cells */,
 				3BE5B7252C1624D900A85DE4 /* DetailViewController.swift */,
 				3BE5B7272C16257400A85DE4 /* DetailInteractor.swift */,
 				3BE5B7292C1625BE00A85DE4 /* DetailPresenter.swift */,
@@ -263,6 +292,16 @@
 				3BE5B7232C16199400A85DE4 /* WordSynonym.swift */,
 			);
 			path = Entitiy;
+			sourceTree = "<group>";
+		};
+		3BE5B72D2C1640B200A85DE4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3BE5B72E2C1640E900A85DE4 /* WordDetailCell.swift */,
+				3BE3AC022C1714E700191A43 /* SynonymCell.swift */,
+				3BE3AC042C171A8100191A43 /* SynonymTableViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -402,15 +441,20 @@
 			files = (
 				3BB8DC1C2C13DC68007700B6 /* AppDelegate.swift in Sources */,
 				3B07CAB12C14EE2900652E40 /* SplashInteractor.swift in Sources */,
+				3BE3AC0D2C172C4000191A43 /* RecentSearchCell.swift in Sources */,
 				3B07CAA72C14EBEB00652E40 /* LoadingView.swift in Sources */,
 				3BE5B72A2C1625BE00A85DE4 /* DetailPresenter.swift in Sources */,
 				3B07CABC2C14F8EF00652E40 /* HomeInteractor.swift in Sources */,
+				3BE3AC0A2C1728E300191A43 /* CGFloat + Extension.swift in Sources */,
 				3B07CAB32C14EE8A00652E40 /* SplashPresenter.swift in Sources */,
 				3BB8DC1E2C13DC68007700B6 /* SceneDelegate.swift in Sources */,
 				3B07CAAF2C14ED7400652E40 /* SplashViewController.swift in Sources */,
+				3BE3AC032C1714E800191A43 /* SynonymCell.swift in Sources */,
 				3BE5B7282C16257400A85DE4 /* DetailInteractor.swift in Sources */,
 				3B07CAAB2C14EC5A00652E40 /* LoadingShowable.swift in Sources */,
+				3BE5B72F2C1640E900A85DE4 /* WordDetailCell.swift in Sources */,
 				3B07CABA2C14F8E000652E40 /* HomeViewController.swift in Sources */,
+				3BE3AC052C171A8100191A43 /* SynonymTableViewCell.swift in Sources */,
 				3BE5B7262C1624D900A85DE4 /* DetailViewController.swift in Sources */,
 				3BE5B72C2C16260000A85DE4 /* DetailRouter.swift in Sources */,
 				3B07CAC02C14F91000652E40 /* HomeRouter.swift in Sources */,

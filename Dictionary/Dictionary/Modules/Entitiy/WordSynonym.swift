@@ -8,7 +8,7 @@
 import Foundation
 
 struct Synonym: Decodable {
-    let word: String
+    let word: String?
     let score: Int?
 }
 

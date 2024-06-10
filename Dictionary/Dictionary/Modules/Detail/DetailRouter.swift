@@ -5,7 +5,7 @@
 //  Created by Necati Alperen IŞIK on 9.06.2024.
 //
 
-import Foundation
+import UIKit
 
 enum DetailRoutes {
     case home
@@ -33,7 +33,8 @@ final class DetailRouter {
 
 extension DetailRouter: DetailRouterProtocol {
     func navigate(_ route: DetailRoutes) {
-        // todo apideki sourceURLS ile webview eklenebilir
+        // todo? sourceurls webview
     }
 }
+
 

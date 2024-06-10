@@ -36,3 +36,4 @@ extension DetailPresenter: DetailInteractorOutputProtocol {
         view.showDetails(details)
     }
 }
+

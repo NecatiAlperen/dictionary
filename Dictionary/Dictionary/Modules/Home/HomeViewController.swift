@@ -36,7 +36,45 @@ final class HomeViewController: BaseViewController {
         return button
     }()
     
+    private lazy var recentSearchLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Recent Search"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .black
+        return label
+    }()
+
+    private lazy var arrowImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "chevron.down")
+        imageView.tintColor = .black
+        return imageView
+    }()
+
+    private lazy var recentSearchStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [recentSearchLabel, arrowImageView])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var recentSearchTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isHidden = true
+        tableView.layer.cornerRadius = 10
+        tableView.register(RecentSearchCell.self, forCellReuseIdentifier: RecentSearchCell.identifier)
+        return tableView
+    }()
+    
     private var searchButtonBottomConstraint: NSLayoutConstraint!
+    private var recentSearchTableHeightConstraint: NSLayoutConstraint!
     
     var presenter: HomePresenterProtocol!
     
@@ -45,6 +83,9 @@ final class HomeViewController: BaseViewController {
         view.backgroundColor = .white
         setupViews()
         presenter.viewDidLoad()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(recentSearchClicked))
+        recentSearchStackView.addGestureRecognizer(tap)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -55,9 +96,21 @@ final class HomeViewController: BaseViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    @objc func recentSearchClicked() {
+        recentSearchTableView.isHidden.toggle()
+        recentSearchTableHeightConstraint.constant = recentSearchTableView.isHidden ? 0 : 220
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     func setupViews() {
         view.addSubview(searchBar)
         view.addSubview(searchButton)
+        view.addSubview(recentSearchStackView)
+        view.addSubview(recentSearchTableView)
+        
+        let screenWidth = UIScreen.main.bounds.width
         
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -68,7 +121,19 @@ final class HomeViewController: BaseViewController {
             searchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             searchButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            recentSearchStackView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8),
+            recentSearchStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            recentSearchStackView.widthAnchor.constraint(equalToConstant: screenWidth * 0.8),
+            recentSearchStackView.heightAnchor.constraint(equalToConstant: 44),
+            
+            recentSearchTableView.topAnchor.constraint(equalTo: recentSearchStackView.bottomAnchor, constant: 8),
+            recentSearchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            recentSearchTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
         ])
+        
+        recentSearchTableHeightConstraint = recentSearchTableView.heightAnchor.constraint(equalToConstant: 0)
+        recentSearchTableHeightConstraint.isActive = true
         
         searchButtonBottomConstraint = searchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         searchButtonBottomConstraint.isActive = true
@@ -94,6 +159,7 @@ final class HomeViewController: BaseViewController {
     @objc func didTapSearchButton() {
         guard let query = searchBar.text, !query.isEmpty else { return }
         presenter.search(query: query)
+        print("asd")
     }
 }
 
@@ -111,8 +177,21 @@ extension HomeViewController: HomeViewControllerProtocol {
     }
 }
 
-
 extension HomeViewController: UISearchBarDelegate {
     
+}
+
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchCell.identifier, for: indexPath) as? RecentSearchCell else {
+            return UITableViewCell()
+        }
+        
+        return cell
+    }
 }
 

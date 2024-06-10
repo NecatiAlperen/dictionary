@@ -31,3 +31,5 @@ extension DetailInteractor: DetailInteractorProtocol {
         }
     }
 }
+
+
