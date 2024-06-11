@@ -12,3 +12,4 @@ struct Synonym: Decodable {
     let score: Int?
 }
 
+

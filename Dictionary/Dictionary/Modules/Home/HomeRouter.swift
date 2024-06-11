@@ -8,7 +8,7 @@
 import UIKit
 
 enum HomeRoutes {
-    case detail(details: [WordDetail])
+    case detail(details: [WordDetail], word: String)
 }
 
 protocol HomeRouterProtocol {
@@ -33,11 +33,10 @@ final class HomeRouter {
 extension HomeRouter: HomeRouterProtocol {
     func navigate(to route: HomeRoutes) {
         switch route {
-        case .detail(let details):
-            let detailVC = DetailRouter.createModule(with: details)
+        case .detail(let details, let word):
+            let detailVC = DetailRouter.createModule(with: details, word: word)
             viewController?.navigationController?.pushViewController(detailVC, animated: true)
         }
     }
 }
-
 

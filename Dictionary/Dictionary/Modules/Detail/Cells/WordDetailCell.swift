@@ -5,11 +5,19 @@
 //  Created by Necati Alperen IŞIK on 9.06.2024.
 //
 
-import UIKit
 
+import UIKit
 
 final class WordDetailCell: UITableViewCell {
     static let identifier = "WordDetailCell"
+
+    private lazy var labelLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .black
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
     private lazy var partOfSpeechLabel: UILabel = {
         let label = UILabel()
@@ -18,7 +26,7 @@ final class WordDetailCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var definitionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
@@ -27,7 +35,7 @@ final class WordDetailCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
-    
+
     private lazy var exampleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.italicSystemFont(ofSize: 14)
@@ -36,15 +44,15 @@ final class WordDetailCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
-    
+
     private lazy var verticalStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [partOfSpeechLabel, definitionLabel, exampleLabel])
+        let stackView = UIStackView(arrangedSubviews: [labelLabel, definitionLabel, exampleLabel])
         stackView.axis = .vertical
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(verticalStackView)
@@ -55,13 +63,13 @@ final class WordDetailCell: UITableViewCell {
             verticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with meaning: Meaning) {
-        partOfSpeechLabel.text = meaning.partOfSpeech?.capitalized
+    func configure(with meaning: Meaning, label: String) {
+        labelLabel.text = label
         definitionLabel.text = meaning.definitions.first?.definition
         exampleLabel.text = meaning.definitions.first?.example
     }

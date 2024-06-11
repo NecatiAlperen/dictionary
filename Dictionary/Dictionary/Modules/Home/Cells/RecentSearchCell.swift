@@ -8,7 +8,6 @@
 import UIKit
 
 final class RecentSearchCell: UITableViewCell {
-
     static let identifier = "RecentSearchCell"
 
     private lazy var magnifyingGlassImageView: UIImageView = {
@@ -21,7 +20,6 @@ final class RecentSearchCell: UITableViewCell {
     
     private lazy var searchTextLabel: UILabel = {
         let label = UILabel()
-        label.text = "Pencil"
         label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -49,18 +47,22 @@ final class RecentSearchCell: UITableViewCell {
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
+            magnifyingGlassImageView.widthAnchor.constraint(equalToConstant: 20),
+            magnifyingGlassImageView.heightAnchor.constraint(equalToConstant: 20),
+            
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            
-            magnifyingGlassImageView.widthAnchor.constraint(equalToConstant: 20),
-            magnifyingGlassImageView.heightAnchor.constraint(equalToConstant: 20)
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(with searchText: String) {
+        searchTextLabel.text = searchText
     }
 }
 

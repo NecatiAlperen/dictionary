@@ -78,3 +78,5 @@ extension SynonymTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         return cell
     }
 }
+
+

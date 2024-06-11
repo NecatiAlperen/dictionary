@@ -17,13 +17,14 @@ protocol DetailRouterProtocol {
 
 final class DetailRouter {
     weak var viewController: DetailViewController?
-    
-    static func createModule(with details: [WordDetail]) -> DetailViewController {
+
+    static func createModule(with details: [WordDetail], word: String) -> DetailViewController {
         let view = DetailViewController()
+        view.word = word
         let interactor = DetailInteractor(details: details)
         let router = DetailRouter()
         let presenter = DetailPresenter(view: view, router: router, interactor: interactor)
-        
+
         view.presenter = presenter
         interactor.output = presenter
         router.viewController = view
@@ -36,5 +37,8 @@ extension DetailRouter: DetailRouterProtocol {
         // todo? sourceurls webview
     }
 }
+
+
+
 
 

@@ -10,6 +10,7 @@ import Foundation
 protocol HomePresenterProtocol {
     func viewDidLoad()
     func search(query: String)
+    func fetchRecentSearches()
 }
 
 final class HomePresenter {
@@ -17,11 +18,7 @@ final class HomePresenter {
     let router: HomeRouterProtocol
     let interactor: HomeInteractorProtocol
 
-    init(
-        view: HomeViewControllerProtocol,
-        router: HomeRouterProtocol,
-        interactor: HomeInteractorProtocol
-    ) {
+    init(view: HomeViewControllerProtocol, router: HomeRouterProtocol, interactor: HomeInteractorProtocol) {
         self.view = view
         self.router = router
         self.interactor = interactor
@@ -30,19 +27,25 @@ final class HomePresenter {
 
 extension HomePresenter: HomePresenterProtocol {
     func viewDidLoad() {
-        print("home view did load")
+        fetchRecentSearches()
     }
 
     func search(query: String) {
         view.showLoadingView()
         interactor.searchWord(query)
     }
+
+    func fetchRecentSearches() {
+        let searches = interactor.getRecentSearches()
+        view.showRecentSearches(searches)
+    }
 }
 
 extension HomePresenter: HomeInteractorOutputProtocol {
     func didFetchWordDetails(_ details: [WordDetail]) {
         view.hideLoadingView()
-        router.navigate(to: .detail(details: details))
+        router.navigate(to: .detail(details: details, word: details.first?.word ?? ""))
+        fetchRecentSearches()   
     }
 
     func didFailToFetchWordDetails(with error: Error) {
