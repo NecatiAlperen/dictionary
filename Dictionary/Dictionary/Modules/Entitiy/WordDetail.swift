@@ -11,6 +11,7 @@ struct WordDetail: Decodable {
     let word: String
     let phonetics: [Phonetic]
     let meanings: [Meaning]
+    let sourceUrls: [String]?
 }
 
 struct Phonetic: Decodable {
@@ -24,9 +25,12 @@ struct Meaning: Decodable {
 }
 
 struct Definition: Decodable {
-    let definition: String?
+    let definition: String
     let example: String?
 }
+
+
+
 
 
 

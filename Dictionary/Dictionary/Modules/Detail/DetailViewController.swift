@@ -7,10 +7,12 @@
 
 import UIKit
 import AVFoundation
+import SafariServices
 
 protocol DetailViewControllerProtocol: AnyObject {
     func showDetails(_ details: [WordDetail])
     func showSynonyms(_ synonyms: [String])
+    // set table views delegate
     var word: String { get }
 }
 
@@ -18,7 +20,7 @@ final class DetailViewController: BaseViewController {
 
     var presenter: DetailPresenterProtocol!
     var details: [WordDetail]?
-    var synonyms: [String] = []
+    var synonyms: [Synonym] = []
     var word: String = ""
     var filteredMeanings: [Meaning] = []
     var selectedFilters: [String] = []
@@ -26,8 +28,8 @@ final class DetailViewController: BaseViewController {
 
     private lazy var wordLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 32)
-        label.textColor = .black
+        label.font = Theme.Fonts.headline
+        label.textColor = Theme.Colors.primary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -54,29 +56,34 @@ final class DetailViewController: BaseViewController {
     private lazy var adverbButton: UIButton = createFilterButton(title: "Adverb")
     private lazy var clearButton: UIButton = {
         let button = UIButton()
-        button.setTitle("X", for: .normal)
-        button.setTitleColor(.red, for: .normal)
+        button.setTitle("✖️", for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 15
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.red.cgColor
+        button.layer.borderColor = UIColor.black.cgColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(clearFilter), for: .touchUpInside)
         button.isHidden = true
         return button
     }()
 
+    private lazy var filterStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [clearButton, nounButton, verbButton, adjectiveButton, adverbButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
     private lazy var headerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.Colors.greyBackground
         view.addSubview(wordLabel)
         view.addSubview(personButton)
         view.addSubview(phoneticLabel)
-        view.addSubview(nounButton)
-        view.addSubview(verbButton)
-        view.addSubview(adjectiveButton)
-        view.addSubview(adverbButton)
-        view.addSubview(clearButton)
+        view.addSubview(filterStackView)
 
         NSLayoutConstraint.activate([
             wordLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
@@ -88,30 +95,10 @@ final class DetailViewController: BaseViewController {
             phoneticLabel.topAnchor.constraint(equalTo: wordLabel.bottomAnchor, constant: 8),
             phoneticLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 
-            nounButton.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor, constant: 16),
-            nounButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            nounButton.heightAnchor.constraint(equalToConstant: 30),
-            nounButton.widthAnchor.constraint(equalToConstant: 80),
-
-            verbButton.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor, constant: 16),
-            verbButton.leadingAnchor.constraint(equalTo: nounButton.trailingAnchor, constant: 16),
-            verbButton.heightAnchor.constraint(equalToConstant: 30),
-            verbButton.widthAnchor.constraint(equalToConstant: 80),
-
-            adjectiveButton.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor, constant: 16),
-            adjectiveButton.leadingAnchor.constraint(equalTo: verbButton.trailingAnchor, constant: 16),
-            adjectiveButton.heightAnchor.constraint(equalToConstant: 30),
-            adjectiveButton.widthAnchor.constraint(equalToConstant: 80),
-
-            adverbButton.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor, constant: 16),
-            adverbButton.leadingAnchor.constraint(equalTo: adjectiveButton.trailingAnchor, constant: 16),
-            adverbButton.heightAnchor.constraint(equalToConstant: 30),
-            adverbButton.widthAnchor.constraint(equalToConstant: 80),
-
-            clearButton.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor, constant: 16),
-            clearButton.leadingAnchor.constraint(equalTo: adverbButton.trailingAnchor, constant: 16),
-            clearButton.heightAnchor.constraint(equalToConstant: 30),
-            clearButton.widthAnchor.constraint(equalToConstant: 30),
+            filterStackView.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor, constant: 16),
+            filterStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            filterStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -16),
+            filterStackView.heightAnchor.constraint(equalToConstant: 30)
         ])
 
         return view
@@ -149,15 +136,32 @@ final class DetailViewController: BaseViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        let networkButton = UIBarButtonItem(image: UIImage(systemName: "network"), style: .plain, target: self, action: #selector(networkButtonTapped))
+        navigationItem.rightBarButtonItem = networkButton
+    }
+
+    @objc private func networkButtonTapped() {
+        guard let sourceUrl = details?.first?.sourceUrls?.first, let url = URL(string: sourceUrl) else {
+            let alert = UIAlertController(title: "Error", message: "No valid URL found.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+            // presnter protcol nutton tappped
+        }
+
+        let safariViewController = SFSafariViewController(url: url)
+        present(safariViewController, animated: true, completion: nil)
     }
 
     @objc private func playAudio() {
-        guard let audioUrl = details?.first?.phonetics.first(where: { $0.audio != nil })?.audio, let url = URL(string: audioUrl) else {
+        guard let phonetic = details?.first?.phonetics.first(where: { $0.audio?.isEmpty == false }), let audioUrl = phonetic.audio, let url = URL(string: audioUrl) else {
             personButton.isHidden = true
             return
         }
         player = AVPlayer(url: url)
         player?.play()
+        // view.auido
     }
 
     private func createFilterButton(title: String) -> UIButton {
@@ -165,38 +169,37 @@ final class DetailViewController: BaseViewController {
         button.setTitle(title, for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
-        button.layer.cornerRadius = 15
-        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 8
+        button.layer.borderWidth = 1.5
         button.layer.borderColor = UIColor.black.cgColor
+        button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(filterButtonTapped(_:)), for: .touchUpInside)
         return button
     }
 
     @objc private func filterButtonTapped(_ sender: UIButton) {
-        guard let title = sender.title(for: .normal) else { return }
+        guard let title = sender.title(for: .normal)?.lowercased() else { return }
 
-        if selectedFilters.contains(title.lowercased()) {
-            selectedFilters.removeAll(where: { $0 == title.lowercased() })
+        if selectedFilters.contains(title) {
+            selectedFilters.removeAll(where: { $0 == title })
         } else {
-            selectedFilters.append(title.lowercased())
+            selectedFilters.append(title)
         }
 
         updateFilteredMeanings()
         updateFilterButtons()
         tableView.reloadData()
+        //presenter.filterbuttontap
     }
 
     @objc private func clearFilter() {
         if !selectedFilters.isEmpty {
             selectedFilters.removeLast()
-            if selectedFilters.isEmpty {
-                clearButton.isHidden = true
-            }
             updateFilteredMeanings()
             updateFilterButtons()
             tableView.reloadData()
-        }
+        } // yukarı aynı
     }
 
     private func updateFilteredMeanings() {
@@ -205,34 +208,36 @@ final class DetailViewController: BaseViewController {
 
         for detail in details {
             for meaning in detail.meanings {
-                if selectedFilters.isEmpty || selectedFilters.contains(meaning.partOfSpeech ?? "") {
+                if selectedFilters.isEmpty || selectedFilters.contains(meaning.partOfSpeech?.lowercased() ?? "") {
                     allMeanings.append(contentsOf: meaning.definitions.map { definition in
                         Meaning(partOfSpeech: meaning.partOfSpeech, definitions: [definition])
                     })
                 }
-            }
+            } // aynı
         }
         
         filteredMeanings = allMeanings
     }
 
     private func updateFilterButtons() {
-        nounButton.backgroundColor = selectedFilters.contains("noun") ? .lightGray : .white
-        verbButton.backgroundColor = selectedFilters.contains("verb") ? .lightGray : .white
-        adjectiveButton.backgroundColor = selectedFilters.contains("adjective") ? .lightGray : .white
-        adverbButton.backgroundColor = selectedFilters.contains("adverb") ? .lightGray : .white
+        nounButton.layer.borderColor = selectedFilters.contains("noun") ? Theme.Colors.primary.cgColor : UIColor.black.cgColor
+        verbButton.layer.borderColor = selectedFilters.contains("verb") ? Theme.Colors.primary.cgColor : UIColor.black.cgColor
+        adjectiveButton.layer.borderColor = selectedFilters.contains("adjective") ? Theme.Colors.primary.cgColor : UIColor.black.cgColor
+        adverbButton.layer.borderColor = selectedFilters.contains("adverb") ? Theme.Colors.primary.cgColor : UIColor.black.cgColor
         clearButton.isHidden = selectedFilters.isEmpty
+        // present.selected filters ile taşı
     }
 
     private func filterButtonsSetup() {
         guard let details = details else { return }
         let meanings = details.flatMap { $0.meanings }
-        let partsOfSpeech = Set(meanings.compactMap { $0.partOfSpeech })
+        let partsOfSpeech = Set(meanings.compactMap { $0.partOfSpeech?.lowercased() })
 
         nounButton.isHidden = !partsOfSpeech.contains("noun")
         verbButton.isHidden = !partsOfSpeech.contains("verb")
         adjectiveButton.isHidden = !partsOfSpeech.contains("adjective")
         adverbButton.isHidden = !partsOfSpeech.contains("adverb")
+        // bak
     }
 }
 
@@ -249,10 +254,11 @@ extension DetailViewController: DetailViewControllerProtocol {
         }
         filterButtonsSetup()
         tableView.reloadData()
-    }
+    } // presenter.showdet(reload data)
 
     func showSynonyms(_ synonyms: [String]) {
-        self.synonyms = synonyms
+        let synonymObjects = synonyms.map { Synonym(word: $0, score: Int.random(in: 0..<100)) }  
+        self.synonyms = synonymObjects
         tableView.reloadData()
     }
 }
@@ -279,6 +285,9 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.configure(with: synonyms)
+            cell.didSelectSynonym = { [weak self] word in
+                self?.presenter.loadWordDetails(for: word)
+            }
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: WordDetailCell.identifier, for: indexPath) as? WordDetailCell else {
@@ -291,6 +300,14 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

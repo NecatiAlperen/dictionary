@@ -35,7 +35,8 @@ final class SynonymTableViewCell: UITableViewCell {
         return collectionView
     }()
     
-    private var synonyms: [String] = []
+    private var synonyms: [Synonym] = []
+    var didSelectSynonym: ((String) -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,8 +60,8 @@ final class SynonymTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with synonyms: [String]) {
-        self.synonyms = synonyms
+    func configure(with synonyms: [Synonym]) {
+        self.synonyms = Array(synonyms.sorted().prefix(5))
         collectionView.reloadData()
     }
 }
@@ -77,6 +78,11 @@ extension SynonymTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         cell.configure(with: synonyms[indexPath.item])
         return cell
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        didSelectSynonym?(synonyms[indexPath.item].word)
+    }
 }
+
 
 

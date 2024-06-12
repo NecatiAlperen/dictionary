@@ -10,6 +10,7 @@ import Foundation
 
 protocol DetailPresenterProtocol {
     func viewDidLoad()
+    func loadWordDetails(for word: String)
 }
 
 final class DetailPresenter {
@@ -29,6 +30,10 @@ extension DetailPresenter: DetailPresenterProtocol {
         interactor.fetchDetails()
         interactor.fetchSynonyms(for: view.word)
     }
+
+    func loadWordDetails(for word: String) {
+        interactor.fetchWordDetails(for: word)
+    }
 }
 
 extension DetailPresenter: DetailInteractorOutputProtocol {
@@ -37,6 +42,11 @@ extension DetailPresenter: DetailInteractorOutputProtocol {
     }
 
     func didFetchSynonyms(_ synonyms: [String]) {
+        view.showSynonyms(synonyms)
+    }
+
+    func didFetchWordDetails(_ details: [WordDetail], synonyms: [String]) {
+        view.showDetails(details)
         view.showSynonyms(synonyms)
     }
 }

@@ -13,7 +13,7 @@ final class WordDetailCell: UITableViewCell {
 
     private lazy var labelLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = Theme.Fonts.body
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

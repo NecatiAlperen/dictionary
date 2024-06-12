@@ -88,14 +88,18 @@ final class HomeViewController: BaseViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(recentSearchClicked))
         recentSearchStackView.addGestureRecognizer(tap)
+        keyboardNotification()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func keyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func recentSearchClicked() {
@@ -109,7 +113,7 @@ final class HomeViewController: BaseViewController {
         }
     }
     
-    func setupViews() {
+    private func setupViews() {
         view.addSubview(searchBar)
         view.addSubview(searchButton)
         view.addSubview(recentSearchStackView)
@@ -193,6 +197,7 @@ extension HomeViewController: UISearchBarDelegate {
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recentSearches.count
+        //presenter.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -207,6 +212,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let searchText = recentSearches[indexPath.row]
         searchBar.text = searchText
         didTapSearchButton()
+        // presenter.didtapped
     }
 }
 

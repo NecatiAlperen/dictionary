@@ -39,9 +39,10 @@ final class SynonymCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with synonym: String) {
-        synonymLabel.text = synonym
+    func configure(with synonym: Synonym) {
+        synonymLabel.text = synonym.word
     }
 }
+
 
 

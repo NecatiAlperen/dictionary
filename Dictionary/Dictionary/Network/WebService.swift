@@ -31,13 +31,15 @@ final class NetworkService {
         AF.request(url).validate().responseDecodable(of: [Synonym].self) { response in
             switch response.result {
             case .success(let synonyms):
-                let synonymWords = synonyms.compactMap { $0.word }
-                completion(.success(synonymWords))
+                let topSynonyms = synonyms.sorted().prefix(5).map { $0.word }
+                completion(.success(topSynonyms))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
 }
+
+
 
 

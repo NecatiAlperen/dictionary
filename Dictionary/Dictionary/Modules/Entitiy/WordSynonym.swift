@@ -5,11 +5,16 @@
 //  Created by Necati Alperen IŞIK on 9.06.2024.
 //
 
-import Foundation
+struct Synonym: Decodable, Comparable {
+    let word: String
+    let score: Int
 
-struct Synonym: Decodable {
-    let word: String?
-    let score: Int?
+    static func < (lhs: Synonym, rhs: Synonym) -> Bool {
+        return lhs.score > rhs.score
+    }
 }
+
+
+
 
 

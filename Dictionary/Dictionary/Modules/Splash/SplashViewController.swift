@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 
 protocol SplashViewControllerProtocol: AnyObject {
@@ -15,40 +16,28 @@ protocol SplashViewControllerProtocol: AnyObject {
 
 
 final class SplashViewController: BaseViewController {
-
-    
-    private lazy var welcomeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "splash screen"
-        label.textColor = .black
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     
     var presenter: SplashPresenterProtocol!
+    private var animationView : LottieAnimationView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupViews()
         presenter.viewDidAppear()
+        setupAnimation()
     }
     
-    func setupViews() {
-        view.addSubview(welcomeLabel)
-        
-        NSLayoutConstraint.activate([
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            welcomeLabel.widthAnchor.constraint(equalToConstant: 200),
-            welcomeLabel.heightAnchor.constraint(equalToConstant: 50)
-        ])
+    func setupAnimation() {
+        animationView = .init(name: "dict")
+        animationView!.frame = view.bounds
+        animationView!.contentMode = .scaleAspectFit
+        animationView!.loopMode = .playOnce
+        view.addSubview(animationView!)
+        animationView!.play()
     }
-
     
-
+    
+    
 }
 
 extension SplashViewController : SplashViewControllerProtocol {
