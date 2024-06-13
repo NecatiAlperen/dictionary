@@ -13,22 +13,23 @@ final class SynonymTableViewCell: UITableViewCell {
     private lazy var titleLabel: UILabel = {
        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Synonym"
-        label.textColor = .black
+        label.text = "Synonyms"
+        label.textColor = Theme.Colors.navy
         label.textAlignment = .left
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = Theme.Fonts.headline
         return label
     }()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 10
-        layout.itemSize = CGSize(width: 80, height: 40)
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(SynonymCell.self, forCellWithReuseIdentifier: SynonymCell.identifier)
@@ -40,6 +41,14 @@ final class SynonymTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupCell() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(collectionView)
         
@@ -52,16 +61,12 @@ final class SynonymTableViewCell: UITableViewCell {
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            collectionView.heightAnchor.constraint(equalToConstant: 100)
+            collectionView.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     func configure(with synonyms: [Synonym]) {
-        self.synonyms = Array(synonyms.sorted().prefix(5))
+        self.synonyms = Array(synonyms.sorted(by: { $0.score > $1.score }).prefix(5))
         collectionView.reloadData()
     }
 }
@@ -83,6 +88,5 @@ extension SynonymTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         didSelectSynonym?(synonyms[indexPath.item].word)
     }
 }
-
 
 

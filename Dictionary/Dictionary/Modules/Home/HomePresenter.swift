@@ -11,12 +11,18 @@ protocol HomePresenterProtocol {
     func viewDidLoad()
     func search(query: String)
     func fetchRecentSearches()
+    func numberOfRecentSearches() -> Int
+    func recentSearch(at index: Int) -> String
+    func selectRecentSearch(at index: Int)
+    func toggleRecentSearches()
 }
 
 final class HomePresenter {
     unowned var view: HomeViewControllerProtocol
     let router: HomeRouterProtocol
     let interactor: HomeInteractorProtocol
+    private var recentSearches: [String] = []
+    private var isRecentSearchesVisible: Bool = false
 
     init(view: HomeViewControllerProtocol, router: HomeRouterProtocol, interactor: HomeInteractorProtocol) {
         self.view = view
@@ -36,8 +42,32 @@ extension HomePresenter: HomePresenterProtocol {
     }
 
     func fetchRecentSearches() {
-        let searches = interactor.getRecentSearches()
-        view.showRecentSearches(searches)
+        recentSearches = interactor.getRecentSearches()
+        view.showRecentSearches(recentSearches)
+        if isRecentSearchesVisible {
+            view.toggleRecentSearchTableView(isVisible: isRecentSearchesVisible)
+        }
+    }
+    
+    func numberOfRecentSearches() -> Int {
+        return recentSearches.count
+    }
+    
+    func recentSearch(at index: Int) -> String {
+        return recentSearches[index]
+    }
+    
+    func selectRecentSearch(at index: Int) {
+        let searchText = recentSearches[index]
+        search(query: searchText)
+    }
+    
+    func toggleRecentSearches() {
+        isRecentSearchesVisible.toggle()
+        view.toggleRecentSearchTableView(isVisible: isRecentSearchesVisible)
+        if isRecentSearchesVisible {
+            fetchRecentSearches()
+        }
     }
 }
 
@@ -45,7 +75,7 @@ extension HomePresenter: HomeInteractorOutputProtocol {
     func didFetchWordDetails(_ details: [WordDetail]) {
         view.hideLoadingView()
         router.navigate(to: .detail(details: details, word: details.first?.word ?? ""))
-        fetchRecentSearches()   
+        fetchRecentSearches()
     }
 
     func didFailToFetchWordDetails(with error: Error) {
@@ -53,4 +83,5 @@ extension HomePresenter: HomeInteractorOutputProtocol {
         view.showError(error.localizedDescription)
     }
 }
+
 

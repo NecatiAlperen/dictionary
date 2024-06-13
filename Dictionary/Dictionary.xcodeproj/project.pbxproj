@@ -22,6 +22,7 @@
 		3B491A942C19A7B9009FB046 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3B491A932C19A7B9009FB046 /* Lottie */; };
 		3B491A972C19AA13009FB046 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B491A962C19AA13009FB046 /* Theme.swift */; };
 		3B491A992C19ABC2009FB046 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B491A982C19ABC2009FB046 /* UIColor + Extension.swift */; };
+		3B491A9B2C19EBE9009FB046 /* NoResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B491A9A2C19EBE9009FB046 /* NoResultView.swift */; };
 		3B7B318D2C17556800858628 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B318C2C17556800858628 /* UIViewController + Extension.swift */; };
 		3B945C9D2C16186B0019F208 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B945C9C2C16186B0019F208 /* WebService.swift */; };
 		3BB8DC1C2C13DC68007700B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8DC1B2C13DC68007700B6 /* AppDelegate.swift */; };
@@ -78,6 +79,7 @@
 		3B491A902C19A798009FB046 /* dict.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dict.json; sourceTree = "<group>"; };
 		3B491A962C19AA13009FB046 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		3B491A982C19ABC2009FB046 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
+		3B491A9A2C19EBE9009FB046 /* NoResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResultView.swift; sourceTree = "<group>"; };
 		3B7B318C2C17556800858628 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		3B945C9C2C16186B0019F208 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		3BB8DC182C13DC68007700B6 /* Dictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				3B07CAA62C14EBEB00652E40 /* LoadingView.swift */,
+				3B491A9A2C19EBE9009FB046 /* NoResultView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -493,6 +496,7 @@
 				3BE5B7222C16196F00A85DE4 /* WordDetail.swift in Sources */,
 				3B945C9D2C16186B0019F208 /* WebService.swift in Sources */,
 				3B07CABE2C14F90600652E40 /* HomePresenter.swift in Sources */,
+				3B491A9B2C19EBE9009FB046 /* NoResultView.swift in Sources */,
 				3B07CAB52C14EF5800652E40 /* SplashRouter.swift in Sources */,
 				3B07CAB82C14EFF600652E40 /* Reachability.swift in Sources */,
 				3BE5B7242C16199400A85DE4 /* WordSynonym.swift in Sources */,

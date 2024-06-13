@@ -9,9 +9,11 @@ import UIKit
 
 struct Theme {
     struct Colors {
-        static let primary = UIColor(hex: "#000080")
-        static let secondary = UIColor(hex: "#33FF57")
+        static let navy = UIColor(hex: "#000080")
+        static let orange = UIColor(hex: "#FF5F00")
         static let greyBackground = UIColor(hex: "#f1f1f1")
+        static let black = UIColor(hex: "#000000")
+        static let white = UIColor(hex: "#ffffff")
          
     }
 

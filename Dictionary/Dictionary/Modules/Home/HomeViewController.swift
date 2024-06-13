@@ -12,6 +12,7 @@ protocol HomeViewControllerProtocol: AnyObject {
     func hideLoadingView()
     func showError(_ message: String)
     func showRecentSearches(_ searches: [String])
+    func toggleRecentSearchTableView(isVisible: Bool)
 }
 
 final class HomeViewController: BaseViewController {
@@ -72,9 +73,15 @@ final class HomeViewController: BaseViewController {
         return tableView
     }()
     
+    private lazy var noResultView: NoResultView = {
+        let view = NoResultView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
+    }()
+    
     private var searchButtonBottomConstraint: NSLayoutConstraint!
     private var recentSearchTableHeightConstraint: NSLayoutConstraint!
-    private var recentSearches: [String] = []
     
     var presenter: HomePresenterProtocol!
     
@@ -83,13 +90,15 @@ final class HomeViewController: BaseViewController {
         view.backgroundColor = .white
         setupViews()
         self.hideKeyboardWhenTappedAround()
-
         presenter.viewDidLoad()
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(recentSearchClicked))
         recentSearchStackView.addGestureRecognizer(tap)
         keyboardNotification()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.fetchRecentSearches()
     }
     
     deinit {
@@ -103,21 +112,15 @@ final class HomeViewController: BaseViewController {
     }
     
     @objc func recentSearchClicked() {
-        recentSearchTableView.isHidden.toggle()
-        recentSearchTableHeightConstraint.constant = recentSearchTableView.isHidden ? 0 : 220
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
-        if !recentSearchTableView.isHidden {
-            presenter.fetchRecentSearches()
-        }
+        presenter.toggleRecentSearches()
     }
     
     private func setupViews() {
         view.addSubview(searchBar)
-        view.addSubview(searchButton)
         view.addSubview(recentSearchStackView)
         view.addSubview(recentSearchTableView)
+        view.addSubview(noResultView)
+        view.addSubview(searchButton)
         
         let screenWidth = UIScreen.main.bounds.width
         
@@ -139,12 +142,17 @@ final class HomeViewController: BaseViewController {
             recentSearchTableView.topAnchor.constraint(equalTo: recentSearchStackView.bottomAnchor, constant: 8),
             recentSearchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             recentSearchTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            
+            noResultView.topAnchor.constraint(equalTo: recentSearchStackView.bottomAnchor, constant: 8),
+            noResultView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            noResultView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            noResultView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
         recentSearchTableHeightConstraint = recentSearchTableView.heightAnchor.constraint(equalToConstant: 0)
         recentSearchTableHeightConstraint.isActive = true
         
-        searchButtonBottomConstraint = searchButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        searchButtonBottomConstraint = searchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         searchButtonBottomConstraint.isActive = true
     }
     
@@ -159,7 +167,7 @@ final class HomeViewController: BaseViewController {
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-        searchButtonBottomConstraint.constant = -20
+        searchButtonBottomConstraint.constant = 0
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
@@ -185,37 +193,43 @@ extension HomeViewController: HomeViewControllerProtocol {
     }
     
     func showRecentSearches(_ searches: [String]) {
-        self.recentSearches = searches
         recentSearchTableView.reloadData()
+        noResultView.isHidden = !searches.isEmpty
+    }
+
+    func toggleRecentSearchTableView(isVisible: Bool) {
+        recentSearchTableView.isHidden = !isVisible
+        recentSearchTableHeightConstraint.constant = isVisible ? 220 : 0
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
 }
 
 extension HomeViewController: UISearchBarDelegate {
-    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recentSearches.count
-        //presenter.count
+        return presenter.numberOfRecentSearches()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchCell.identifier, for: indexPath) as? RecentSearchCell else {
             return UITableViewCell()
         }
-        cell.configure(with: recentSearches[indexPath.row])
+        cell.configure(with: presenter.recentSearch(at: indexPath.row))
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let searchText = recentSearches[indexPath.row]
-        searchBar.text = searchText
-        didTapSearchButton()
-        // presenter.didtapped
+        presenter.selectRecentSearch(at: indexPath.row)
     }
+    
 }
-
-
 
 

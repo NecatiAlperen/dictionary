@@ -74,7 +74,3 @@ extension DetailInteractor: DetailInteractorProtocol {
 }
 
 
-
-
-
-

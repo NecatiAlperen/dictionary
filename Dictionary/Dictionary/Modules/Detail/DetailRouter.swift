@@ -6,39 +6,33 @@
 //
 
 import UIKit
-
-enum DetailRoutes {
-    case home
-}
+import SafariServices
 
 protocol DetailRouterProtocol {
-    func navigate(_ route: DetailRoutes)
+    func presentSafariViewController(with url: URL)
 }
 
-final class DetailRouter {
-    weak var viewController: DetailViewController?
+final class DetailRouter: DetailRouterProtocol {
+    weak var viewController: UIViewController?
 
     static func createModule(with details: [WordDetail], word: String) -> DetailViewController {
         let view = DetailViewController()
-        view.word = word
         let interactor = DetailInteractor(details: details)
         let router = DetailRouter()
         let presenter = DetailPresenter(view: view, router: router, interactor: interactor)
 
         view.presenter = presenter
+        view.word = word
         interactor.output = presenter
         router.viewController = view
+
         return view
     }
-}
 
-extension DetailRouter: DetailRouterProtocol {
-    func navigate(_ route: DetailRoutes) {
-        // todo? sourceurls webview
+    func presentSafariViewController(with url: URL) {
+        let safariViewController = SFSafariViewController(url: url)
+        viewController?.present(safariViewController, animated: true, completion: nil)
     }
 }
-
-
-
 
 
