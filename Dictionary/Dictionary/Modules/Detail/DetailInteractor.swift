@@ -15,8 +15,8 @@ protocol DetailInteractorProtocol {
 
 protocol DetailInteractorOutputProtocol: AnyObject {
     func didFetchDetails(_ details: [WordDetail])
-    func didFetchSynonyms(_ synonyms: [String])
-    func didFetchWordDetails(_ details: [WordDetail], synonyms: [String])
+    func didFetchSynonyms(_ synonyms: [Synonym])
+    func didFetchWordDetails(_ details: [WordDetail], synonyms: [Synonym])
 }
 
 final class DetailInteractor {
@@ -40,8 +40,8 @@ extension DetailInteractor: DetailInteractorProtocol {
             switch result {
             case .success(let synonyms):
                 self?.output?.didFetchSynonyms(synonyms)
-            case .failure(let error):
-                print(error)
+            case .failure:
+                self?.output?.didFetchSynonyms([])
             }
         }
     }
@@ -49,20 +49,26 @@ extension DetailInteractor: DetailInteractorProtocol {
     func fetchWordDetails(for word: String) {
         let group = DispatchGroup()
         var fetchedDetails: [WordDetail] = []
-        var fetchedSynonyms: [String] = []
+        var fetchedSynonyms: [Synonym] = []
         
         group.enter()
         NetworkService.shared.fetchWordDetails(word: word) { result in
-            if case .success(let details) = result {
+            switch result {
+            case .success(let details):
                 fetchedDetails = details
+            case .failure(let error):
+                print(error)
             }
             group.leave()
         }
         
         group.enter()
         NetworkService.shared.fetchSynonyms(word: word) { result in
-            if case .success(let synonyms) = result {
+            switch result {
+            case .success(let synonyms):
                 fetchedSynonyms = synonyms
+            case .failure(let error):
+                print(error)
             }
             group.leave()
         }
@@ -72,5 +78,7 @@ extension DetailInteractor: DetailInteractorProtocol {
         }
     }
 }
+
+
 
 

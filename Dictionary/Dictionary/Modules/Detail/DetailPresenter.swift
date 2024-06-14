@@ -5,7 +5,6 @@
 //  Created by Necati Alperen IŞIK on 9.06.2024.
 //
 
-import Foundation
 import AVFoundation
 import UIKit
 
@@ -23,14 +22,16 @@ protocol DetailPresenterProtocol {
 }
 
 final class DetailPresenter {
+    
+    //MARK: -- VARIABLES
     unowned var view: DetailViewControllerProtocol
     let router: DetailRouterProtocol
     let interactor: DetailInteractorProtocol
     private var details: [WordDetail] = []
-    private var synonyms: [String] = []
+    private var synonyms: [Synonym] = []
     private var filteredMeanings: [Meaning] = []
     private var selectedFilters: [String] = []
-    private var player: AVPlayer?
+    var player: AVPlayer?
 
     init(view: DetailViewControllerProtocol, router: DetailRouterProtocol, interactor: DetailInteractorProtocol) {
         self.view = view
@@ -70,7 +71,7 @@ extension DetailPresenter: DetailPresenterProtocol {
         if !selectedFilters.isEmpty {
             selectedFilters.removeLast()
             updateFilteredMeanings(details)
-            view.updateFilterButtons(selectedFilters: selectedFilters)
+            view.updateFilterButtons(with: partsOfSpeech(from: details), selectedFilters: selectedFilters)
             view.reloadTableView()
         }
     }
@@ -82,7 +83,7 @@ extension DetailPresenter: DetailPresenterProtocol {
             selectedFilters.append(title)
         }
         updateFilteredMeanings(details)
-        view.updateFilterButtons(selectedFilters: selectedFilters)
+        view.updateFilterButtons(with: partsOfSpeech(from: details), selectedFilters: selectedFilters)
         view.reloadTableView()
     }
 
@@ -101,9 +102,14 @@ extension DetailPresenter: DetailPresenterProtocol {
     }
 
     func filterButtonsSetup() {
+        let partsOfSpeech = self.partsOfSpeech(from: details)
+        view.updateFilterButtons(with: partsOfSpeech, selectedFilters: selectedFilters)
+    }
+
+    private func partsOfSpeech(from details: [WordDetail]) -> [String] {
         let meanings = details.flatMap { $0.meanings }
         let partsOfSpeech = Set(meanings.compactMap { $0.partOfSpeech?.lowercased() })
-        view.updateFilterButtons(selectedFilters: selectedFilters)
+        return Array(partsOfSpeech)
     }
 
     func numberOfRows(in section: Int) -> Int {
@@ -122,8 +128,7 @@ extension DetailPresenter: DetailPresenterProtocol {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SynonymTableViewCell.identifier, for: indexPath) as? SynonymTableViewCell else {
                 return UITableViewCell()
             }
-            let synonymObjects = synonyms.map { Synonym(word: $0, score: Int.random(in: 0..<100)) }
-            cell.configure(with: synonymObjects)
+            cell.configure(with: synonyms)
             cell.didSelectSynonym = { [weak self] word in
                 self?.loadWordDetails(for: word)
             }
@@ -144,19 +149,27 @@ extension DetailPresenter: DetailInteractorOutputProtocol {
     func didFetchDetails(_ details: [WordDetail]) {
         self.details = details
         view.showDetails(details)
+        checkAndHidePersonButtonIfNeeded()
     }
 
-    func didFetchSynonyms(_ synonyms: [String]) {
+    func didFetchSynonyms(_ synonyms: [Synonym]) {
         self.synonyms = synonyms
         view.showSynonyms(synonyms)
     }
 
-    func didFetchWordDetails(_ details: [WordDetail], synonyms: [String]) {
+    func didFetchWordDetails(_ details: [WordDetail], synonyms: [Synonym]) {
         self.details = details
         self.synonyms = synonyms
         view.showDetails(details)
         view.showSynonyms(synonyms)
+        checkAndHidePersonButtonIfNeeded()
+    }
+    
+    private func checkAndHidePersonButtonIfNeeded() {
+        let hasAudio = details.first?.phonetics.first(where: { $0.audio != nil && !$0.audio!.isEmpty }) != nil
+        view.showPersonButton(hasAudio)
     }
 }
+
 
 

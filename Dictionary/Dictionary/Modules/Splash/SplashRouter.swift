@@ -34,7 +34,6 @@ final class SplashRouter {
         return view
         
     }
-    
 }
 
 extension SplashRouter: SplashRouterProtocol {

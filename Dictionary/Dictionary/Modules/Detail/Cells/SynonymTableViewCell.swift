@@ -9,9 +9,9 @@ import UIKit
 
 final class SynonymTableViewCell: UITableViewCell {
     static let identifier = "SynonymTableViewCell"
-
+    //MARK: -- COMPONENTS
     private lazy var titleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Synonyms"
         label.textColor = Theme.Colors.navy
@@ -19,17 +19,17 @@ final class SynonymTableViewCell: UITableViewCell {
         label.font = Theme.Fonts.headline
         return label
     }()
-    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 10
-        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 16
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(SynonymCell.self, forCellWithReuseIdentifier: SynonymCell.identifier)
@@ -38,7 +38,8 @@ final class SynonymTableViewCell: UITableViewCell {
     
     private var synonyms: [Synonym] = []
     var didSelectSynonym: ((String) -> Void)?
-
+    
+    //MARK: -- LIFECYCLES
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -48,6 +49,7 @@ final class SynonymTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: -- FUNCTIONS
     private func setupCell() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(collectionView)
@@ -66,11 +68,11 @@ final class SynonymTableViewCell: UITableViewCell {
     }
     
     func configure(with synonyms: [Synonym]) {
-        self.synonyms = Array(synonyms.sorted(by: { $0.score > $1.score }).prefix(5))
+        self.synonyms = synonyms.count > 5 ? Array(synonyms.prefix(5)) : synonyms
         collectionView.reloadData()
     }
 }
-
+//MARK: -- EXTENSIONS
 extension SynonymTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return synonyms.count
@@ -80,7 +82,7 @@ extension SynonymTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SynonymCell.identifier, for: indexPath) as? SynonymCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: synonyms[indexPath.item])
+        cell.configure(with: synonyms[indexPath.item].word)
         return cell
     }
 
@@ -88,5 +90,9 @@ extension SynonymTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         didSelectSynonym?(synonyms[indexPath.item].word)
     }
 }
+
+
+
+
 
 

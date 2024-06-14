@@ -9,7 +9,7 @@ import UIKit
 
 
 final class NoResultView: UIView {
-    
+    //MARK: -- COMPONENTS
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
@@ -25,7 +25,7 @@ final class NoResultView: UIView {
         label.text = "No results found"
         return label
     }()
-    
+    //MARK: -- LIFECYCLES
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -34,7 +34,7 @@ final class NoResultView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //MARK: -- FUNCTIONS
     private func setupViews() {
         addSubview(imageView)
         addSubview(messageLabel)

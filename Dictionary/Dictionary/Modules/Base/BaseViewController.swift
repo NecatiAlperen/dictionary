@@ -21,7 +21,4 @@ import UIKit
         present(alert, animated: true)
         
     }
-
-    
-
 }

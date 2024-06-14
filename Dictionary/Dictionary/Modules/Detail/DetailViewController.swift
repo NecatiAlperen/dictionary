@@ -9,21 +9,21 @@ import UIKit
 import AVFoundation
 import SafariServices
 
-
 protocol DetailViewControllerProtocol: AnyObject {
     func showDetails(_ details: [WordDetail])
-    func showSynonyms(_ synonyms: [String])
-    func updateFilterButtons(selectedFilters: [String])
+    func showSynonyms(_ synonyms: [Synonym])
+    func updateFilterButtons(with titles: [String], selectedFilters: [String])
     func reloadTableView()
     func showError(_ message: String)
+    func showPersonButton(_ visible: Bool)
     var word: String { get }
 }
 
 final class DetailViewController: BaseViewController {
-    
     var presenter: DetailPresenterProtocol!
     var word: String = ""
     
+    //MARK: -- COMPONENTS
     private lazy var wordLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.headline
@@ -31,7 +31,6 @@ final class DetailViewController: BaseViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
     private lazy var phoneticLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
@@ -39,7 +38,6 @@ final class DetailViewController: BaseViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
     private lazy var personButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "person.wave.2.fill")?.withRenderingMode(.alwaysTemplate), for: .normal)
@@ -61,22 +59,13 @@ final class DetailViewController: BaseViewController {
         button.isHidden = true
         return button
     }()
-    
-    private lazy var nounButton: UIButton = createFilterButton(title: "Noun")
-    private lazy var verbButton: UIButton = createFilterButton(title: "Verb")
-    private lazy var adjectiveButton: UIButton = createFilterButton(title: "Adjective")
-    private lazy var adverbButton: UIButton = createFilterButton(title: "Adverb")
-    
-    
-    
     private lazy var filterStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [clearButton, nounButton, verbButton, adjectiveButton, adverbButton])
+        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
     private lazy var headerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +93,6 @@ final class DetailViewController: BaseViewController {
         
         return view
     }()
-    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -115,14 +103,14 @@ final class DetailViewController: BaseViewController {
         return tableView
     }()
     
+    //MARK: --  LIFECYCLES
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
         presenter.viewDidLoad()
-        
     }
-    
+    //MARK: --  FUNCTIONS
     func setupViews() {
         view.addSubview(headerView)
         view.addSubview(tableView)
@@ -173,28 +161,48 @@ final class DetailViewController: BaseViewController {
         guard let title = sender.title(for: .normal)?.lowercased() else { return }
         presenter.filterButtonTapped(with: title)
     }
+    
+    func updateFilterButtons(with titles: [String], selectedFilters: [String]) {
+        filterStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        filterStackView.addArrangedSubview(clearButton)
+        titles.forEach { title in
+            let button = createFilterButton(title: title)
+            filterStackView.addArrangedSubview(button)
+        }
+        updateFilterButtonSelections(selectedFilters: selectedFilters)
+    }
+    
+    private func updateFilterButtonSelections(selectedFilters: [String]) {
+        filterStackView.arrangedSubviews.forEach { view in
+            if let button = view as? UIButton {
+                let title = button.title(for: .normal)?.lowercased() ?? ""
+                button.layer.borderColor = selectedFilters.contains(title) ? Theme.Colors.navy.cgColor : Theme.Colors.white.cgColor
+            }
+        }
+        clearButton.isHidden = selectedFilters.isEmpty
+    }
+    
+    func showPersonButton(_ visible: Bool) {
+        personButton.isHidden = !visible
+    }
 }
 
 extension DetailViewController: DetailViewControllerProtocol {
+    
     func showDetails(_ details: [WordDetail]) {
         wordLabel.text = details.first?.word
         phoneticLabel.text = details.first?.phonetics.first?.text
-        personButton.isHidden = details.first?.phonetics.first(where: { $0.audio != nil }) == nil
         presenter.updateFilteredMeanings(details)
         presenter.filterButtonsSetup()
         reloadTableView()
     }
     
-    func showSynonyms(_ synonyms: [String]) {
+    func showSynonyms(_ synonyms: [Synonym]) {
         reloadTableView()
     }
     
     func updateFilterButtons(selectedFilters: [String]) {
-        nounButton.layer.borderColor = selectedFilters.contains("noun") ? Theme.Colors.navy.cgColor : Theme.Colors.white.cgColor
-        verbButton.layer.borderColor = selectedFilters.contains("verb") ? Theme.Colors.navy.cgColor : Theme.Colors.white.cgColor
-        adjectiveButton.layer.borderColor = selectedFilters.contains("adjective") ? Theme.Colors.navy.cgColor : Theme.Colors.white.cgColor
-        adverbButton.layer.borderColor = selectedFilters.contains("adverb") ? Theme.Colors.navy.cgColor : Theme.Colors.white.cgColor
-        clearButton.isHidden = selectedFilters.isEmpty
+        updateFilterButtonSelections(selectedFilters: selectedFilters)
     }
     
     func reloadTableView() {
@@ -208,7 +216,6 @@ extension DetailViewController: DetailViewControllerProtocol {
     }
 }
 
-
 extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -221,8 +228,11 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return presenter.cellForRow(at: indexPath, in: tableView)
     }
+    
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return nil 
+        return nil
     }
 }
+
+
 

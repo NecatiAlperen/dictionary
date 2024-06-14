@@ -5,12 +5,12 @@
 //  Created by Necati Alperen IŞIK on 9.06.2024.
 //
 
-
 import UIKit
 
 final class WordDetailCell: UITableViewCell {
     static let identifier = "WordDetailCell"
 
+    //MARK: -- COMPONENTS
     private lazy var partOfSpeechLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.body
@@ -18,26 +18,22 @@ final class WordDetailCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
-
     private lazy var definitionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Theme.Fonts.body
         label.textColor = Theme.Colors.black
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         return label
     }()
-
     private lazy var exampleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.italicSystemFont(ofSize: 14)
-        label.textColor = .gray
+        label.font = Theme.Fonts.caption
+        label.textColor = .darkGray
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         return label
     }()
-
     private lazy var verticalStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [partOfSpeechLabel, definitionLabel, exampleLabel])
         stackView.axis = .vertical
@@ -45,7 +41,8 @@ final class WordDetailCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
+    //MARK: -- LIFECYCLES
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -55,6 +52,7 @@ final class WordDetailCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: -- FUNCTIONS
     func setupCell() {
         contentView.addSubview(verticalStackView)
         NSLayoutConstraint.activate([

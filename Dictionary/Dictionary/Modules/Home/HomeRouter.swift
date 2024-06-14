@@ -7,12 +7,12 @@
 
 import UIKit
 
-enum HomeRoutes {
+enum HomeRoute {
     case detail(details: [WordDetail], word: String)
 }
 
 protocol HomeRouterProtocol {
-    func navigate(to route: HomeRoutes)
+    func navigate(to route: HomeRoute)
 }
 
 final class HomeRouter {
@@ -31,7 +31,7 @@ final class HomeRouter {
 }
 
 extension HomeRouter: HomeRouterProtocol {
-    func navigate(to route: HomeRoutes) {
+    func navigate(to route: HomeRoute) {
         switch route {
         case .detail(let details, let word):
             let detailVC = DetailRouter.createModule(with: details, word: word)

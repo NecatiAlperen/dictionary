@@ -16,7 +16,8 @@ protocol HomeViewControllerProtocol: AnyObject {
 }
 
 final class HomeViewController: BaseViewController {
-
+    
+    //MARK: -- COMPONENTS
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Search.."
@@ -24,18 +25,16 @@ final class HomeViewController: BaseViewController {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
     }()
-    
     private lazy var searchButton: UIButton = {
         let button = UIButton()
         button.setTitle("Search", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.white, for: .highlighted)
         button.backgroundColor = .blue
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
         return button
     }()
-    
     private lazy var recentSearchLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +43,6 @@ final class HomeViewController: BaseViewController {
         label.textColor = .black
         return label
     }()
-
     private lazy var arrowImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +50,6 @@ final class HomeViewController: BaseViewController {
         imageView.tintColor = .black
         return imageView
     }()
-
     private lazy var recentSearchStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [recentSearchLabel, arrowImageView])
         stackView.axis = .horizontal
@@ -62,7 +59,6 @@ final class HomeViewController: BaseViewController {
         stackView.isUserInteractionEnabled = true
         return stackView
     }()
-    
     private lazy var recentSearchTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,7 +68,6 @@ final class HomeViewController: BaseViewController {
         tableView.register(RecentSearchCell.self, forCellReuseIdentifier: RecentSearchCell.identifier)
         return tableView
     }()
-    
     private lazy var noResultView: NoResultView = {
         let view = NoResultView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +79,7 @@ final class HomeViewController: BaseViewController {
     private var recentSearchTableHeightConstraint: NSLayoutConstraint!
     
     var presenter: HomePresenterProtocol!
-    
+    //MARK: --  LIFECYCLES
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -94,6 +89,8 @@ final class HomeViewController: BaseViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(recentSearchClicked))
         recentSearchStackView.addGestureRecognizer(tap)
         keyboardNotification()
+        setAccessibilityIdentifier()
+        addSearchButtonTapGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,7 +102,7 @@ final class HomeViewController: BaseViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
+    //MARK: -- FUNCTIONS
     private func keyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -130,8 +127,8 @@ final class HomeViewController: BaseViewController {
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             searchBar.heightAnchor.constraint(equalToConstant: 44),
             
-            searchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            searchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             searchButton.heightAnchor.constraint(equalToConstant: 50),
             
             recentSearchStackView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8),
@@ -152,8 +149,13 @@ final class HomeViewController: BaseViewController {
         recentSearchTableHeightConstraint = recentSearchTableView.heightAnchor.constraint(equalToConstant: 0)
         recentSearchTableHeightConstraint.isActive = true
         
-        searchButtonBottomConstraint = searchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+        searchButtonBottomConstraint = searchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         searchButtonBottomConstraint.isActive = true
+    }
+    
+    private func addSearchButtonTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSearchButton))
+        searchButton.addGestureRecognizer(tapGesture)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -179,6 +181,7 @@ final class HomeViewController: BaseViewController {
     }
 }
 
+//MARK: -- EXTENSIONS
 extension HomeViewController: HomeViewControllerProtocol {
     func showError(_ message: String) {
         showAlert(with: "Error", message: message)
@@ -229,7 +232,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.selectRecentSearch(at: indexPath.row)
     }
-    
 }
+
+extension HomeViewController {
+    
+    func setAccessibilityIdentifier() {
+        searchButton.accessibilityIdentifier = "searchButton"
+        searchBar.accessibilityIdentifier = "searchBar"
+    }
+}
+
 
 

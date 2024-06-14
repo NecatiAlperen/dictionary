@@ -18,6 +18,7 @@ protocol HomePresenterProtocol {
 }
 
 final class HomePresenter {
+    //MARK: -- VARIABLES
     unowned var view: HomeViewControllerProtocol
     let router: HomeRouterProtocol
     let interactor: HomeInteractorProtocol
@@ -30,7 +31,7 @@ final class HomePresenter {
         self.interactor = interactor
     }
 }
-
+//MARK: -- EXTENSIONS
 extension HomePresenter: HomePresenterProtocol {
     func viewDidLoad() {
         fetchRecentSearches()

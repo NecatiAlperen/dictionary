@@ -13,8 +13,6 @@ protocol SplashViewControllerProtocol: AnyObject {
     func noInternetConnection()
 }
 
-
-
 final class SplashViewController: BaseViewController {
     
     var presenter: SplashPresenterProtocol!
@@ -35,9 +33,6 @@ final class SplashViewController: BaseViewController {
         view.addSubview(animationView!)
         animationView!.play()
     }
-    
-    
-    
 }
 
 extension SplashViewController : SplashViewControllerProtocol {

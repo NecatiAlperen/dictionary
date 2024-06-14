@@ -26,19 +26,23 @@ final class NetworkService {
         }
     }
 
-    func fetchSynonyms(word: String, completion: @escaping (Result<[String], Error>) -> Void) {
+    func fetchSynonyms(word: String, completion: @escaping (Result<[Synonym], Error>) -> Void) {
         let url = "https://api.datamuse.com/words?rel_syn=\(word)"
         AF.request(url).validate().responseDecodable(of: [Synonym].self) { response in
             switch response.result {
             case .success(let synonyms):
-                let topSynonyms = synonyms.sorted().prefix(5).map { $0.word }
-                completion(.success(topSynonyms))
+                completion(.success(synonyms))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
 }
+
+
+
+
+
 
 
 

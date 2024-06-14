@@ -18,7 +18,7 @@ class LoadingView {
     private init() {
         configure()
     }
-
+    
     func configure() {
         blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +27,7 @@ class LoadingView {
         activityIndicator.hidesWhenStopped = true
         blurView.contentView.addSubview(activityIndicator)
     }
-
+    
     func startLoading() {
         UIApplication.shared.windows.first?.addSubview(blurView)
         blurView.translatesAutoresizingMaskIntoConstraints = false
